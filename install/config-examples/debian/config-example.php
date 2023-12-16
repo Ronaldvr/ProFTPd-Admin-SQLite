@@ -27,7 +27,7 @@ $cfg['login'] = array(
   /* Username. Please use any username you want */
   'username' => 'admin',
   /* Password. CHANGE IT and use secure password! */
-  'password' => 'password',
+  'password' => '@Admin2023',
   /* Blowfish secret key (22 chars). CHANGE IT! */
   'blowfish' => 'XBu5pjOTa8H7UIwYSzMZxD'
 );
@@ -76,7 +76,7 @@ $cfg['default_homedir'] = "/home/web";
 // "crypt" uses the unix crypt() function.
 // "OpenSSL:sha1" other digest-names also possible; see: http://www.proftpd.org/docs/directives/configuration_full.html#SQLAUTHTYPES
 $cfg['passwd_encryption'] = "crypt";
-$cfg['min_passwd_length'] = "4";
+$cfg['min_passwd_length'] = "10";
 $cfg['max_userid_length'] = "32";
 $cfg['max_groupname_length'] = "32";
 // the expressions used to validate user and groupnames are used in two places
