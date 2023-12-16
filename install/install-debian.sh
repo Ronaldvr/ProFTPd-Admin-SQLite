@@ -19,6 +19,7 @@ mysql_secure_installation
 cd /var/www/html
 git clone https://github.com/jniltinho/ProFTPd-Admin-Secure-Version.git proftpdadmin
 cp proftpdadmin/install/config-examples/debian/config-example.php proftpdadmin/configs/config.php
+sed -i 's|yourdbpasswordhere|@proftpd2023|' proftpdadmin/configs/config.php
 
 
 echo "CREATE DATABASE IF NOT EXISTS proftpd;
