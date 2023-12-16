@@ -39,7 +39,7 @@ rm -f create_db.sql
 
 
 cp proftpdadmin/install/config-examples/debian/sql.conf /etc/proftpd/
-sed -i 's|<yourdbpasswordhere>|@proftpd2023|' /etc/proftpd/sql.conf
+sed -i 's|yourdbpasswordhere|@proftpd2023|' /etc/proftpd/sql.conf
 #sed -i 's|MultilineRFC2228|#MultilineRFC2228|g' /etc/proftpd/proftpd.conf
 
 cp proftpdadmin/install/config-examples/debian/modules.conf /etc/proftpd/
