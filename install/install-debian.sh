@@ -7,9 +7,14 @@
 
 
 apt-get update
+apt-get install -y apt-transport-https lsb-release ca-certificates wget 
+wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" >/etc/apt/sources.list.d/php.list 
+
+
 apt-get install -yq vim git unzip net-tools
 apt-get install -yq proftpd-basic proftpd-mod-mysql proftpd-mod-crypto
-apt-get install -yq php apache2 mariadb-server mariadb-client
+apt-get install -yq php7.4 php7.4-mysql apache2 mariadb-server mariadb-client
 
 ## Config Mysql
 systemctl start mariadb
