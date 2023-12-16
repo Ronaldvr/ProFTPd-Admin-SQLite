@@ -55,6 +55,7 @@ $cfg['field_disabled'] = "disabled";
 $cfg['field_login_count'] = "login_count";
 $cfg['field_last_login'] = "last_login";
 $cfg['field_last_modified'] = "last_modified";
+$cfg['field_expiration'] = "expiration";
 $cfg['field_bytes_in_used'] = "bytes_in_used";
 $cfg['field_bytes_out_used'] = "bytes_out_used";
 $cfg['field_files_in_used'] = "files_in_used";
