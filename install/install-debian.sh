@@ -17,7 +17,7 @@ apt-get update
 
 apt-get install -yq vim git unzip net-tools
 apt-get install -yq proftpd-basic proftpd-mod-mysql proftpd-mod-crypto
-apt-get install -yq php7.4 php7.4-mysql apache2 mariadb-server mariadb-client
+apt-get install -yq php7.4 php7.4-mysql mcrypt php7.4-mcrypt apache2 mariadb-server mariadb-client
 
 ## Config Mysql
 systemctl start mariadb
