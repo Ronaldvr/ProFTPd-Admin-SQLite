@@ -6,6 +6,7 @@
 ## https://www.linuxbabe.com/mail-server/postfixadmin-ubuntu
 ## https://tecadmin.net/how-to-install-php-on-debian-12/
 ## https://tecadmin.net/switch-between-multiple-php-version-on-debian/
+## https://stackoverflow.com/questions/6479107/how-to-enable-mysql-query-log
 
 
 apt-get update
