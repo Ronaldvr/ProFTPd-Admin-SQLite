@@ -4,12 +4,15 @@
 ## https://www.digitalocean.com/community/tutorials/how-to-set-up-proftpd-with-a-mysql-backend-on-ubuntu-12-10
 ## https://github.com/mkkeck/ProFTPd-Admin-Secure-Version
 ## https://www.linuxbabe.com/mail-server/postfixadmin-ubuntu
+## https://tecadmin.net/how-to-install-php-on-debian-12/
+## https://tecadmin.net/switch-between-multiple-php-version-on-debian/
 
 
 apt-get update
 apt-get install -y apt-transport-https lsb-release ca-certificates wget 
 wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" >/etc/apt/sources.list.d/php.list 
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" >/etc/apt/sources.list.d/php.list
+apt-get update
 
 
 apt-get install -yq vim git unzip net-tools
