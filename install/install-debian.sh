@@ -18,6 +18,9 @@ systemctl start mariadb
 systemctl enable mariadb
 mysql_secure_installation
 
+mkdir -p /etc/proftpd/backup
+cp -aR /etc/proftpd/* /etc/proftpd/backup/
+
 cd /var/www/html
 git clone https://github.com/jniltinho/ProFTPd-Admin-Secure-Version.git proftpdadmin
 cp proftpdadmin/install/config-examples/debian/config-example.php proftpdadmin/configs/config.php
@@ -32,16 +35,18 @@ SELECT User,Host FROM mysql.user;" > create_db.sql
 
 mysql -p < create_db.sql
 mysql -p proftpd < proftpdadmin/install/tables.sql
+rm -f create_db.sql
 
 
 cp proftpdadmin/install/config-examples/debian/sql.conf /etc/proftpd/
 sed -i 's|<yourdbpasswordhere>|@proftpd2023|' /etc/proftpd/sql.conf
-sed -i 's|MultilineRFC2228|#MultilineRFC2228|g' /etc/proftpd/proftpd.conf
+#sed -i 's|MultilineRFC2228|#MultilineRFC2228|g' /etc/proftpd/proftpd.conf
 
-sed -i 's|#LoadModule mod_ident.c|LoadModule mod_ident.c|' /etc/proftpd/modules.conf
-sed -i 's|#LoadModule mod_sql.c|LoadModule mod_sql.c|' /etc/proftpd/modules.conf
-sed -i 's|#LoadModule mod_sql_mysql.c|LoadModule mod_sql_mysql.c|' /etc/proftpd/modules.conf
-sed -i 's|#LoadModule mod_sql_passwd.c|LoadModule mod_sql_passwd.c|' /etc/proftpd/modules.conf
+cp proftpdadmin/install/config-examples/debian/modules.conf /etc/proftpd/
+#sed -i 's|#LoadModule mod_ident.c|LoadModule mod_ident.c|' /etc/proftpd/modules.conf
+#sed -i 's|#LoadModule mod_sql.c|LoadModule mod_sql.c|' /etc/proftpd/modules.conf
+#sed -i 's|#LoadModule mod_sql_mysql.c|LoadModule mod_sql_mysql.c|' /etc/proftpd/modules.conf
+#sed -i 's|#LoadModule mod_sql_passwd.c|LoadModule mod_sql_passwd.c|' /etc/proftpd/modules.conf
 
 
 ## Check Config
