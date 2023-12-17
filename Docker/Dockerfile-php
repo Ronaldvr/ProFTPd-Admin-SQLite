@@ -1,2 +1,19 @@
 FROM php:7.4.33-apache-bullseye
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV SHELL /bin/bash
+ENV TZ America/Sao_Paulo
+
+RUN apt-get update && apt-get -y install --no-install-recommends tzdata locales \
+    libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev zlib1g-dev \
+    libxml2-dev libzip-dev libonig-dev graphviz \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb
+
+RUN a2enmod rewrite headers \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install gd pdo_mysql mysqli zip \
+    && docker-php-source delete \
+    && docker-php-ext-enable mysqli \
+    && chown -R www-data:www-data /var/www/html
+
