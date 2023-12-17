@@ -15,7 +15,7 @@ cp html/install/config-examples/debian/config-example.php html/configs/config.ph
 sed -i 's|yourdbpasswordhere|@proftpd2023|' html/configs/config.php
 sed -i 's|/home/web|/data|' html/configs/config.php
 sed -i 's|localhost|mariadb|' html/configs/config.php
-mkdir dump
+mkdir dump dbdata
 cp html/install/tables.sql dump/
 docker-compose up -d
 docker-compose exec mariadb bash -c "mysql -u root -h mariadb --password=root proftpd < /dump/tables.sql"
