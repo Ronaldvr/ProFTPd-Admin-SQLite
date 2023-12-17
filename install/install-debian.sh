@@ -23,7 +23,7 @@ mkdir -p /etc/proftpd/backup
 cp -aR /etc/proftpd/* /etc/proftpd/backup/
 
 cd /var/www/html
-git clone https://github.com/jniltinho/ProFTPd-Admin-Secure-Version.git proftpdadmin
+git clone https://github.com/jniltinho/ProFTPd-Admin.git proftpdadmin
 cp proftpdadmin/install/config-examples/debian/config-example.php proftpdadmin/configs/config.php
 sed -i 's|yourdbpasswordhere|@proftpd2023|' proftpdadmin/configs/config.php
 
