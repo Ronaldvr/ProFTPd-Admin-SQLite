@@ -1,0 +1,2 @@
+FROM php:8.2.13-apache-bookworm
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
