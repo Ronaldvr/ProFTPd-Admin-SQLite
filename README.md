@@ -167,25 +167,15 @@ $cfg['login'] = array(
 9. Go to `http://your.server.com/proftpdadmin/` and start using it!
 
 
-### Upgrade
 
-If you want to upgrade the hashing algorithm you have to change all passwords after
-changing the configs (both ProFTPd and ProFTPd Admin).
+## Requirements
 
-
-
-## Plans
-
-* Add postgresql support  
-  » [Issue #26 / Feature request](https://github.com/ChristianBeer/ProFTPd-Admin/issues/26)
-
-* Add default user settings to groups so it is easier to create a new user
-  with default values  
-  » [Issue #28 / Feature request](https://github.com/ChristianBeer/ProFTPd-Admin/issues/28)
-
-* Send e-mail to new users with their password  
-  » [Issue #35 / Feature request](https://github.com/ChristianBeer/ProFTPd-Admin/issues/35)
-
+- Debian 12
+- PHP 8.2
+- MariaDB 10
+- Apache2
+- Run Docker, executer docker-compose on folder path, read Readme.md
+- Install Debian, run script on folder install; bash install-debian.sh
 
 
 ## Thanks
