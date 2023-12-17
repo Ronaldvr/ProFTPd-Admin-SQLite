@@ -18,6 +18,7 @@ sed -i 's|/home/web|/srv/ftp|' html/proftpdadmin/configs/config.php
 sed -i 's|localhost|mariadb|' html/proftpdadmin/configs/config.php
 mkdir dump dbdata
 cp html/proftpdadmin/install/tables.sql dump/
+rm -rf html/proftpdadmin/install
 docker-compose up -d
 docker-compose exec mariadb bash -c "mysql -u root -h mariadb --password=root proftpd < /dump/tables.sql"
 
