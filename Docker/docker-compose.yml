@@ -50,7 +50,7 @@ services:
     environment:
       MARIADB_DATABASE: proftpd
       MARIADB_USER: proftpd
-      MARIADB_PASSWORD: @proftpd2023
+      MARIADB_PASSWORD: "@proftpd2023"
       MARIADB_ROOT_PASSWORD: root
       SERVICE_NAME: mariadb
     volumes:
