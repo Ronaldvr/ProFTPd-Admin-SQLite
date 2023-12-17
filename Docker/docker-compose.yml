@@ -1,0 +1,65 @@
+version: '3'
+services:
+  
+  #ProFTPD Service
+  proftpd:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jniltinho/poftpd
+    container_name: proftpd
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "20:20"
+      - "21:21"
+      - "60000-60100:60000-60100"
+    
+    working_dir: /data
+    volumes:
+      - ./proftpd.conf:/etc/proftpd/proftpd.conf
+      - ./data/ftp:/data
+    networks:
+      - ftp-network
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
+
+  #Apache Service
+  webserver:
+    image: php:8.2.13-apache-bookworm
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/var/www/html
+    networks:
+      - ftp-network
+
+  #MariaDB Service
+  mariadb:
+    image: mariadb:10-jammy
+    container_name: mariadb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: proftpd
+      MARIADB_USER: proftpd
+      MARIADB_PASSWORD: @proftpd2023
+      MARIADB_ROOT_PASSWORD: yourrootpassword
+      SERVICE_NAME: mariadb
+    volumes:
+      - ./dbdata:/var/lib/mysql/
+      - ./mysql/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+    networks:
+      - ftp-network
+
+#Docker Networks
+networks:
+  ftp-network:
+    driver: bridge
