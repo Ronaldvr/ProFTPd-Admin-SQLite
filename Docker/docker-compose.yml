@@ -55,6 +55,7 @@ services:
       SERVICE_NAME: mariadb
     volumes:
       - ./dbdata:/var/lib/mysql/
+      - ./dump:/dump
       - ./mysql/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
     networks:
       - ftp-network
