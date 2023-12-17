@@ -10,7 +10,8 @@ RUN apt-get update && apt-get -y install --no-install-recommends tzdata locales 
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apt/archive/*.deb
 
-RUN a2enmod rewrite headers \
+RUN RUN ln -s "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && a2enmod rewrite headers \
     && docker-php-ext-configure gd \
     && docker-php-ext-install gd pdo_mysql mysqli zip \
     && docker-php-source delete \
