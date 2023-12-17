@@ -31,7 +31,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-php
-    image: jniltinho/php74-apache
+    image: jniltinho/php8-apache
     container_name: webserver
     restart: unless-stopped
     tty: true
