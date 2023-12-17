@@ -51,7 +51,7 @@ services:
       MARIADB_DATABASE: proftpd
       MARIADB_USER: proftpd
       MARIADB_PASSWORD: @proftpd2023
-      MARIADB_ROOT_PASSWORD: yourrootpassword
+      MARIADB_ROOT_PASSWORD: root
       SERVICE_NAME: mariadb
     volumes:
       - ./dbdata:/var/lib/mysql/
