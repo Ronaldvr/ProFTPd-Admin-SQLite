@@ -15,10 +15,10 @@ services:
       - "21:21"
       - "60000-60100:60000-60100"
     
-    working_dir: /data
+    working_dir: /srv/ftp
     volumes:
       - ./proftpd.conf:/etc/proftpd/proftpd.conf
-      - ./data/ftp:/data
+      - ./data/ftp:/srv/ftp
     networks:
       - ftp-network
     depends_on:
