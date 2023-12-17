@@ -29,6 +29,7 @@ services:
   #Apache Service
   webserver:
     image: php:8.2.13-apache-bookworm
+    command: bash -c "docker-php-ext-install mysqli"
     container_name: webserver
     restart: unless-stopped
     tty: true
