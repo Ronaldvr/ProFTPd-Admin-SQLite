@@ -40,7 +40,7 @@ $cfg['force_ssl'] = false;
 
 $cfg['table_users'] = "users";
 $cfg['field_userid'] = "userid";
-$cfg['field_id'] = "id";
+$cfg['field_id'] = "users_pk";
 $cfg['field_uid'] = "uid";
 $cfg['field_ugid'] = "gid";
 $cfg['field_passwd'] = "passwd";
@@ -68,7 +68,7 @@ $cfg['field_groupname'] = "groupname";
 $cfg['field_gid'] = "gid";
 $cfg['field_members'] = "members";
 
-$cfg['default_uid'] = "1000"; //if empty next incremental will be default
+$cfg['default_uid'] = "1001"; //if empty next incremental will be default
 $cfg['default_homedir'] = "/srv/ftp";
 // Use either SHA1 or MD5 or any other supported by your MySQL-Server and ProFTPd
 // "pbkdf2" is supported if you are using ProFTPd 1.3.5.
@@ -85,9 +85,9 @@ $cfg['max_groupname_length'] = "32";
 $cfg['userid_regex']    = "/^([a-zA-Z][a-zA-Z0-9_\-]{0,".($cfg['max_userid_length']-1)."})$/i"; //every username must comply with this regex
 $cfg['groupname_regex'] = "/^([a-zA-Z][a-zA-Z0-9_\-]{0,".($cfg['max_groupname_length']-1)."})$/i"; //every username must comply with this regex
 // Set any of these to -1 to remove the constraint
-$cfg['min_uid'] = 1000;
+$cfg['min_uid'] = 1001;
 $cfg['max_uid'] = 65534;
-$cfg['min_gid'] = 1000;
+$cfg['min_gid'] = 1001;
 $cfg['max_gid'] = 65534;
 // Uncomment this to read crypt() settings from login.defs.
 // $cfg['read_login_defs'] = true;
@@ -97,14 +97,14 @@ $cfg['max_gid'] = 65534;
 $cfg['userid_filter_separator'] = ""; // try "-" or "_" as separators
 
 // use this block for a mysql backend
-$cfg['db_type'] = "mysqli"; // if unset, 'db_type' defaults to mysqli
+/*$cfg['db_type'] = "mysqli"; // if unset, 'db_type' defaults to mysqli
 $cfg['db_host'] = "localhost";
 $cfg['db_name'] = "database";
 $cfg['db_user'] = "user";
-$cfg['db_pass'] = "password";
+$cfg['db_pass'] = "password";*/
 
 // use this block for an sqlite3 backend
-//$cfg['db_type'] = "sqlite3";
-//$cfg['db_path'] = "configs/";
-//$cfg['db_name'] = "auth.sqlite3";
+$cfg['db_type'] = "sqlite3";
+$cfg['db_path'] = "configs/";
+$cfg['db_name'] = "auth.sqlite3";
 
