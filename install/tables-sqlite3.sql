@@ -1,7 +1,7 @@
 /* exported with .dump from SQLite
 *  Added tables
-*          sftphostkeys 
-*          sftpuserkeys
+*          sftphostkeys REMOVED: Functionality is hardly if ever used thus not implemented 
+*          sftpuserkeys REMOVED: Functionality already conrtained in 'users' table 
 *          login_history
 * (Not sure if they will be used right now, but when already present easier to do )
 * removed MySQL type backticks from filednames
@@ -39,16 +39,6 @@ CREATE TABLE users (
   last_modified DATETIME NOT NULL default '0000-00-00 00:00:00',
   expiration DATETIME NOT NULL default '0000-00-00 00:00:00'
 );
-CREATE TABLE sftphostkeys (
-   hostkeyid INTEGER PRIMARY KEY,
-   hostname TEXT NOT NULL,
-   hostkey BLOB NOT NULL
-);
-CREATE TABLE sftpuserkeys (
-   userkeyid INTEGER PRIMARY KEY,
-   userkeyname TEXT NOT NULL,
-   userkey BLOB NOT NULL
-);
 CREATE TABLE login_history (
     username TEXT NOT NULL,
     client_ip TEXT NOT NULL,
@@ -57,8 +47,6 @@ CREATE TABLE login_history (
     login_time DATETIME
 );
 CREATE UNIQUE INDEX groupname ON groups (groupname);
-CREATE INDEX sftphostkeys_idx ON sftphostkeys (host);
 CREATE UNIQUE INDEX userid ON users (userid);
-CREATE INDEX sftpuserkeys_idx ON sftpuserkeys (name);
 COMMIT;
 
