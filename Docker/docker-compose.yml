@@ -9,7 +9,7 @@ services:
   webserver:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: SQLite/Dockerfile
     image: jniltinho/php8-apache
     container_name: webserver
     restart: unless-stopped
