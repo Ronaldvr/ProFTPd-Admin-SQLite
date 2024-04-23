@@ -17,10 +17,10 @@ sed -i 's|yourdbpasswordhere|@proftpd2023|' html/proftpdadmin/configs/config.php
 sed -i 's|/home/web|/srv/ftp|' html/proftpdadmin/configs/config.php
 sed -i 's|localhost|mariadb|' html/proftpdadmin/configs/config.php
 mkdir dump dbdata
-cp html/proftpdadmin/install/tables.sql dump/
+cp html/proftpdadmin/install/tables-sqlite3.sql dump/
 rm -rf html/proftpdadmin/install
 docker-compose up -d
-docker-compose exec sqlite3 auth.sqlit3e < /dump/tables.sql
+docker-compose exec sqlite3 auth.sqlit3e < /dump/tables-sqlite3.sql
 
 ## http://localhost:8080/proftpdadmin
 ## LOGIN: admin PASS: @Admin2023
