@@ -98,13 +98,13 @@ $cfg['max_gid'] = 8999;
 $cfg['userid_filter_separator'] = ""; // try "-" or "_" as separators
 
 // use this block for a mysql backend
-$cfg['db_type'] = "mysqli"; // if unset, 'db_type' defaults to mysqli
-$cfg['db_host'] = "localhost";
-$cfg['db_name'] = "proftpd";
-$cfg['db_user'] = "proftpd";
-$cfg['db_pass'] = "yourdbpasswordhere";
+//$cfg['db_type'] = "mysqli"; // if unset, 'db_type' defaults to mysqli
+//$cfg['db_host'] = "localhost";
+//$cfg['db_name'] = "proftpd";
+//$cfg['db_user'] = "proftpd";
+//$cfg['db_pass'] = "yourdbpasswordhere";
 
 // use this block for an sqlite3 backend
-//$cfg['db_type'] = "sqlite3";
-//$cfg['db_path'] = "configs/";
-//$cfg['db_name'] = "auth.sqlite3";
+$cfg['db_type'] = "sqlite3";
+$cfg['db_path'] = "configs/";
+$cfg['db_name'] = "auth.sqlite3";
