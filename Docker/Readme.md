@@ -6,7 +6,7 @@ Graphical User Interface for ProFTPd with MySQL and sqlite3 support
 ## Run
 
 ```
-git clone https://github.com/jniltinho/ProFTPd-Admin.git html
+git clone https://github.com/Ronaldvr/ProFTPd-Admin-SQLite.git html
 rm -rf html/.git
 mv html/Docker Docker
 mkdir Docker/html
@@ -20,7 +20,7 @@ mkdir dump dbdata
 cp html/proftpdadmin/install/tables.sql dump/
 rm -rf html/proftpdadmin/install
 docker-compose up -d
-docker-compose exec mariadb bash -c "mysql -u root -h mariadb --password=root proftpd < /dump/tables.sql"
+docker-compose exec sqlite3 auth.sqlit3e < /dump/tables.sql
 
 ## http://localhost:8080/proftpdadmin
 ## LOGIN: admin PASS: @Admin2023
