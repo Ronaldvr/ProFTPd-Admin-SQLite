@@ -10,8 +10,8 @@ services:
     build:
       context: .
       dockerfile: SQLite/Dockerfile
-    image: jniltinho/php8-apache
-    container_name: webserver
+    image: proftpd-SQLite
+    container_name: proftpd_Adm
     restart: unless-stopped
     tty: true
     ports:
