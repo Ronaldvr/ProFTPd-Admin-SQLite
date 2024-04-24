@@ -31,29 +31,25 @@ Variables
 These variables can be passed to the image from docker-compose.yml as needed:
 
 
-| Variable | 	Default | 	Description |
+| Variable | Default|Description |
+|----------|-------|-----------------------------------------------|
 | ALLOW_OVERWRITE |  	on | 	allow clients to modify files |
-
-
-ANONYMOUS_DISABLE 	off 	anonymous login
-ANON_UPLOAD_ENABLE 	DenyAll 	anonymous upload
-FTPUSER_PASSWORD_SECRET 	ftp-user-password-secret 	hashed pw of upload user
-FTPUSER_NAME 	ftpuser 	upload username
-FTPUSER_UID 	1001 	upload file ownership UID
-LOCAL_UMASK 	022 	upload umask
-MAX_CLIENTS 	10 	maximum simultaneous logins
-MAX_INSTANCES 	30 	process limit
-PASV_ADDRESS 		required--address of docker engine
-PASV_MAX_PORT 	30100 	range of client ports (rebuild image if changed)
-PASV_MIN_PORT 	30091 	
-SFTP_ENABLE 	off 	use sftp instead of ftp
-SFTP_PORT 	2222 	sftp port
-TIMES_GMT 	off 	local time for directory listing
-TZ 	UTC 	local timezone
-WRITE_ENABLE 	AllowAll 	allow put/rm
-Secrets
-Secret 	Description
-ftp-user-password-secret 	(optional) hashed pw of upload user
+|ANONYMOUS_DISABLE | off |anonymous login |
+|ANON_UPLOAD_ENABLE|DenyAll | anonymous upload |
+|FTPUSER_PASSWORD_SECRET|ftp-user-password-secret | hashed pw of upload user |
+|FTPUSER_NAME|ftpuser | upload username |
+|FTPUSER_UID | 1001 | upload file ownership UID |
+|LOCAL_UMASK | 022 | upload umask|
+|MAX_CLIENTS | 10 | maximum simultaneous logins|
+|MAX_INSTANCES | 30 | process limit|
+|PASV_ADDRESS  | required--address of docker engine|
+|PASV_MAX_PORT| 30100 	range of client ports (rebuild image if changed)|
+|PASV_MIN_PORT |30091 | |
+|SFTP_ENABLE | off | use sftp instead of ftp|
+|SFTP_PORT | 2222 | sftp port|
+|TIMES_GMT | off| local time for directory listing|
+|TZ | UTC |local timezone|
+|WRITE_ENABLE | AllowAll | allow put/rm|
 
 
 ## Links
