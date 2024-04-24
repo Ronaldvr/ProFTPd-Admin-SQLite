@@ -42,8 +42,8 @@ These variables can be passed to the image from docker-compose.yml as needed:
 |LOCAL_UMASK | 022 | upload umask|
 |MAX_CLIENTS | 10 | maximum simultaneous logins|
 |MAX_INSTANCES | 30 | process limit|
-|PASV_ADDRESS  | required--address of docker engine|
-|PASV_MAX_PORT| 30100 	range of client ports (rebuild image if changed)|
+|PASV_ADDRESS  | | required--address of docker engine|
+|PASV_MAX_PORT| 30100 | 	range of client ports (rebuild image if changed)|
 |PASV_MIN_PORT |30091 | |
 |SFTP_ENABLE | off | use sftp instead of ftp|
 |SFTP_PORT | 2222 | sftp port|
