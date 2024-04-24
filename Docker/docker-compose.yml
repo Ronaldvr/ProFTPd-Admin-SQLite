@@ -18,7 +18,7 @@ services:
       - "8080:80"
       - "20:20"
       - "21:21"
-      - "60000-60100:60000-60100"
+      - "$PASV_MIN_PORT-$PASV_MAX_PORT:{$PASV_MIN_PORT-$PASV_MAX_PORT}"
     volumes:
       - ./html:/var/www/html
       - ./proftpd.conf:/etc/proftpd/proftpd.conf
