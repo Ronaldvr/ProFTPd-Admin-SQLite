@@ -50,8 +50,8 @@ RUN  docker-php-ext-install gd zip
 RUN  docker-php-source delete 
 RUN  chown -R www-data:www-data /var/www/html 
 
-COPY ./sql.conf /etc/proftpd/sql.conf
-COPY ./modules.conf /etc/proftpd/modules.conf
+COPY ./Docker/SQLite/sql.conf /etc/proftpd/sql.conf
+COPY ./Docker/SQLite/modules.conf /etc/proftpd/modules.conf
 
 # Do we actually *need this* ??
 # https://docs.docker.com/config/containers/multi-service_container/
@@ -62,7 +62,7 @@ COPY ./modules.conf /etc/proftpd/modules.conf
 #COPY ./supervisord/proftpd.conf /etc/supervisord/
 #RUN sed -i 's|set -e|set -e\n/usr/local/bin/supervisord --daemon -c /etc/supervisord.conf \&|' /usr/local/bin/docker-php-entrypoint
 
-COPY ./Docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./Docker/SQLite/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
