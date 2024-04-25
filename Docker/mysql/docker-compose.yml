@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+  #docker-compose build --no-cache
+  #docker-compose up -d
+  #docker-compose exec mariadb bash -c "mysql -u root -h mariadb --password=root proftpd < /dump/tables.sql"
+
+  #Apache Service + ProFTPD Service
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jniltinho/php8-apache
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+      - "20:20"
+      - "21:21"
+      - "60000-60100:60000-60100"
+    volumes:
+      - ./html:/var/www/html
+      - ./proftpd.conf:/etc/proftpd/proftpd.conf
+      - ./data/ftp:/srv/ftp
+    networks:
+      - ftp-network
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
+
+  #MariaDB Service
+  mariadb:
+    image: mariadb:10-jammy
+    container_name: mariadb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_DATABASE: proftpd
+      MARIADB_USER: proftpd
+      MARIADB_PASSWORD: "@proftpd2023"
+      MARIADB_ROOT_PASSWORD: root
+      SERVICE_NAME: mariadb
+    volumes:
+      - ./dbdata:/var/lib/mysql/
+      - ./dump:/dump
+      - ./mysql/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+    networks:
+      - ftp-network
+
+#Docker Networks
+networks:
+  ftp-network:
+    driver: bridge
