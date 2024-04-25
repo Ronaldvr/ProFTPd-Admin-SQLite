@@ -30,7 +30,7 @@ RUN apt-get update && apt-get -y install \
 	proftpd-basic proftpd-mod-crypto  proftpd-mod-vroot 
 	
 #sqlite support
-RUN sudo apt-get install -y sqlite3 libsqlite3-dev  proftpd-mod-sqlite
+RUN apt-get install -y sqlite3 libsqlite3-dev  proftpd-mod-sqlite
 RUN mkdir /sqlite_db
 #create database and tables
 COPY ./install/tables-sqlite3.sql /sqlite_db/sqlite_install_tables.sql
