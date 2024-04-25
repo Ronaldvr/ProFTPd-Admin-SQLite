@@ -35,7 +35,7 @@ RUN mkdir /sqlite_db
 #create database and tables
 COPY ./install/tables-sqlite3.sql /sqlite_db/sqlite_install_tables.sql
 RUN /usr/bin/sqlite3 /sqlite_db/ftpadmin.db
-RUN sqlite3 /sqlite_db/ftpadmin.db < /sqlite_db/tables-sqlite3.sql
+RUN sqlite3 /sqlite_db/ftpadmin.db < /sqlite_db/sqlite_install_tables.sql
 
 
 #cleanup
