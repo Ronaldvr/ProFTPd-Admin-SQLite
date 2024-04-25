@@ -48,6 +48,9 @@ RUN  a2enmod rewrite headers
 RUN  docker-php-ext-configure gd 
 RUN  docker-php-ext-install gd zip 
 RUN  docker-php-source delete 
+RUN mkdir /var/www/html/proftpadmin
+COPY ./html /var/www/html/proftpadmin
+
 RUN  chown -R www-data:www-data /var/www/html 
 
 COPY ./Docker/SQLite/sql.conf /etc/proftpd/sql.conf
