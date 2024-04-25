@@ -1,6 +1,6 @@
-# ProFTPd Admin
+# ProFTPd Admin - Docker
 
-Graphical User Interface for ProFTPd with MySQL and sqlite3 support
+Dockerized Graphical User Interface for ProFTPd with MySQL and sqlite3 support
 
 
 
@@ -169,11 +169,6 @@ $cfg['login'] = array(
 
 
 ## Requirements
-
-- Debian 12
-- PHP 8.2
-- MariaDB 10
-- Apache2
 - Run Docker, executer docker-compose on folder path, read Readme.md
 - Install Debian, run script on folder install; bash install-debian.sh
 
