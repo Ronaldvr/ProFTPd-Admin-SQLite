@@ -54,7 +54,6 @@ COPY ./sql.conf /etc/proftpd/sql.conf
 COPY ./modules.conf /etc/proftpd/modules.conf
 
 # Do we actually *need this* ??
-# https://docs.docker.com/config/containers/multi-service_container/
 # https://github.com/ochinchina/supervisord
 #COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/bin/supervisord
 #RUN  mkdir -p /etc/supervisord
@@ -62,6 +61,9 @@ COPY ./modules.conf /etc/proftpd/modules.conf
 #COPY ./supervisord/proftpd.conf /etc/supervisord/
 #RUN sed -i 's|set -e|set -e\n/usr/local/bin/supervisord --daemon -c /etc/supervisord.conf \&|' /usr/local/bin/docker-php-entrypoint
 
+# https://docs.docker.com/config/containers/multi-service_container/
+# Tells me it is the least preferred option due to need for additional installation and probable (always) additional issues and vulnerabilities.
+# So swtih to the second option: a .sh file to start the stuff
 COPY ./Docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
