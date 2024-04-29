@@ -25,14 +25,16 @@ the tool you need.
 
 NOTE: Work in Progress!
 
-Install docker
+* Install docker
+  
 copy 
-docker_compose.yml
-.env
-config\cofig.php
-config\proftpd.conf
-config\modules.conf
-config\sql.conf
+
+* docker_compose.yml
+* .env
+* config\cofig.php
+* config\proftpd.conf
+* config\modules.conf
+* config\sql.conf
 
 for your preferred database backend to a local folder and adapt to your needs.
 
