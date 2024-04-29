@@ -1,8 +1,5 @@
 # ProFTPd Admin - Docker
-
-Dockerized Graphical User Interface for ProFTPd with MySQL and sqlite3 support
-
-
+Adapted the proftpd Admin to a Dockerized Graphical User Interface for ProFTPd with MySQL and sqlite3 support
 
 ## About ProFTPd Admin
 
@@ -26,6 +23,27 @@ the tool you need.
 
 ## Installation
 
+NOTE: Work in Progress!
+
+Install docker
+copy 
+docker_compose.yml
+.env
+config\cofig.php
+config\proftpd.conf
+config\modules.conf
+config\sql.conf
+
+for your preferred database backend to a local folder and adapt to your needs.
+
+run docker compose up
+
+(and re-adjust the configs according to the errormessages you get :-)
+
+until you have a running ftp server
+
+enjoy!
+
 **Note:**  
 Please use, if available, a secured connection to your webserver via `https`.
 You can do this by your webserver configurations or simple set in the
@@ -42,135 +60,8 @@ $cfg['force_ssl'] = true; // default was false
 Please notice that you need a SSL-certificate to use secured connection.
 
 
-#### (A) Using MySQL and SHA1
-
-1. Install ProFTPd with MySQL support
-2. Create a MySQL database, for example: "proftpd".
-3. Use the file [install/tables.sql](install/tables.sql) to populate the database.
-4. Add the following to your _`proftpd.conf`_ and _`sql.conf`_ (edit to your needs):
-
-```ini
-CreateHome            on 775
-AuthOrder             mod_sql.c
-
-SQLBackend            mysql
-SQLEngine             on
-SQLPasswordEngine     on
-SQLAuthenticate       on
-SQLAuthTypes          SHA1
-
-SQLConnectInfo        database@localhost username password
-SQLUserInfo           users userid passwd uid gid homedir shell
-SQLGroupInfo          groups groupname gid members
-SQLUserWhereClause    "disabled != 1"
-SQLLog PASS           updatecount
-SQLNamedQuery         updatecount UPDATE "login_count=login_count+1, last_login=now() WHERE userid='%u'" users
-
-# Used to track xfer traffic per user (without invoking a quota)
-SQLLog RETR           bytes-out-count
-SQLNamedQuery         bytes-out-count UPDATE "bytes_out_used=bytes_out_used+%b WHERE userid='%u'" users
-SQLLog RETR           files-out-count
-SQLNamedQuery         files-out-count UPDATE "files_out_used=files_out_used+1 WHERE userid='%u'" users
-
-SQLLog STOR           bytes-in-count
-SQLNamedQuery         bytes-in-count UPDATE "bytes_in_used=bytes_in_used+%b WHERE userid='%u'" users
-SQLLog STOR           files-in-count
-SQLNamedQuery         files-in-count UPDATE "files_in_used=files_in_used+1 WHERE userid='%u'" users
-```
-
-5. Extract all files to your webspace (into a subdirectory like _`proftpdadmin`_).
-6. Copy the _`configs/config_example.php`_ to _**`config.php`**_ and edit the new copied file
-   to your needs.  
-**Notice:** Change the default login settings!
- ```php
-/**
-  * Login data
-  *
-  * Important: Please change this values in
-  *            live systems!
-  */
-$cfg['login'] = array(
-  /* Username. Please use any username you want */
-  'username' => 'admin',
-  /* Password. CHANGE IT and use secure password! */
-  'password' => 'password',
-  /* Blowfish secret key (22 chars). CHANGE IT! */
-  'blowfish' => 'XBu5pjOTa8H7UIwYSzMZxD'
-);
-```
-7. Optional remove or secure the folder _`install`_.
-8. Start ProFTPd.
-9. Go to `http://your.server.com/proftpdadmin/` and start using it!
 
 
-#### (B) Using sqlite3 and pbkdf2
-
-1. Install ProFTPd with sqlite3 support
-2. Use [install/tables-sqlite3.sql](install/tables-sqlite3.sql) to create an sqlite3 database:
-   `sqlite3 auth.sqlite3 < install/tables-sqlite3.sql`
-3. Add the following to your _`proftpd.conf`_ and _`sql.conf`_ (edit to your needs):
-
-```ini
-CreateHome            on 775
-AuthOrder             mod_sql.c
-
-SQLBackend            sqlite3
-SQLEngine             on
-SQLPasswordEngine     on
-SQLAuthenticate       on
-SQLAuthTypes          pbkdf2
-SQLPasswordPBKDF2     sha1 5000 20
-SQLPasswordUserSalt   name Prepend
-SQLPasswordEncoding   hex
-
-SQLConnectInfo        /path/to/auth.sqlite3
-SQLUserInfo           users userid passwd uid gid homedir shell
-SQLGroupInfo          groups groupname gid members
-SQLUserWhereClause    "disabled != 1"
-SQLLog PASS           updatecount
-SQLNamedQuery         updatecount UPDATE "login_count=login_count+1, last_login=now() WHERE userid='%u'" users
-
-# Used to track xfer traffic per user (without invoking a quota)
-SQLLog RETR           bytes-out-count
-SQLNamedQuery         bytes-out-count UPDATE "bytes_out_used=bytes_out_used+%b WHERE userid='%u'" users
-SQLLog RETR           files-out-count
-SQLNamedQuery         files-out-count UPDATE "files_out_used=files_out_used+1 WHERE userid='%u'" users
-
-SQLLog STOR           bytes-in-count
-SQLNamedQuery         bytes-in-count UPDATE "bytes_in_used=bytes_in_used+%b WHERE userid='%u'" users
-SQLLog STOR           files-in-count
-SQLNamedQuery         files-in-count UPDATE "files_in_used=files_in_used+1 WHERE userid='%u'" users
-```
-
-5. Extract all files to your webspace (into a subdirectory like _`proftpdadmin`_).
-6. Copy the _`configs/config_example.php`_ to _**`config.php`**_ and edit the new copied file
-   to your needs.  
-  **Notice:** Change the default login settings!
-```php
-/**
-  * Login data
-  *
-  * Important: Please change this values in
-  *            live systems!
-  */
-$cfg['login'] = array(
-  /* Username. Please use any username you want */
-  'username' => 'admin',
-  /* Password. CHANGE IT and use secure password! */
-  'password' => 'password',
-  /* Blowfish secret key (22 chars). CHANGE IT! */
-  'blowfish' => 'XBu5pjOTa8H7UIwYSzMZxD'
-);
-```
-7. Optional remove or secure the folder _`install`_.
-8. Start ProFTPd.
-9. Go to `http://your.server.com/proftpdadmin/` and start using it!
-
-
-
-## Requirements
-- Run Docker, executer docker-compose on folder path, read Readme.md
-- Install Debian, run script on folder install; bash install-debian.sh
 
 
 ## Thanks
