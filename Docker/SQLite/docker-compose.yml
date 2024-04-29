@@ -1,25 +1,24 @@
 version: '3'
+
 services:
-
-  #docker-compose build --no-cache
-  #docker-compose up -d
-  #docker-compose exec mariadb bash -c "mysql -u root -h mariadb --password=root proftpd < /dump/tables.sql"
-
   #Apache Service + ProFTPD Service
   webserver:
     build:
-      context: .
-      dockerfile: SQLite/Dockerfile
-    image: proftpd-SQLite
+      context: https://github.com/Ronaldvr/ProFTPd-Admin-SQLite.git
+      dockerfile: Dockerfile.sqlite
+    image: proftpd/contain
     container_name: proftpd_Adm
     restart: unless-stopped
-    tty: true
+    tty: true   
     ports:
-      - "8080:80"
-      - "20:20"
-      - "21:21"
-      - "$PASV_MIN_PORT-$PASV_MAX_PORT:{$PASV_MIN_PORT-$PASV_MAX_PORT}"
+      - 8080:80
+      - 20:20
+      - 21:21
+      - $PASV_MIN_PORT-$PASV_MAX_PORT:${PASV_MIN_PORT}-${PASV_MAX_PORT}
     volumes:
-      - ./html:/var/www/html
-      - ./proftpd.conf:/etc/proftpd/proftpd.conf
+      - ./config/config.php:/var/www/html/proftpdadmin/configs/config.php
+      - ./config/proftpd.conf:/etc/proftpd/proftpd.conf
+      - ./config/sql.conf:/etc/proftpd/sql.conf
+      - ./config/modules.conf:/etc/proftpd/modules.conf
+      - ./logs:/var/log/proftpd
       - ./data/ftp:/srv/ftp
