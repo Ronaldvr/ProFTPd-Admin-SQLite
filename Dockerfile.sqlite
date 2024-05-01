@@ -30,7 +30,8 @@ RUN apt-get -y install --no-install-recommends tzdata locales \
 RUN apt-get -y install proftpd-basic proftpd-mod-crypto  proftpd-mod-vroot 
 	
 #sqlite support
-RUN apt-get install -y sqlite3 libsqlite3-dev  proftpd-mod-sqlite php8.3-sqlite3
+RUN apt-get install -y sqlite3 libsqlite3-dev  proftpd-mod-sqlite libsqlite3-0 
+RUN apt-get install php8.2-sqlite3
 RUN mkdir /sqlite_db
 #create database and tables
 COPY ./install/tables-sqlite3.sql /sqlite_db/sqlite_install_tables.sql
