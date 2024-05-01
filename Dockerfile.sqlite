@@ -1,4 +1,4 @@
-FROM php:8-apache-bookworm
+isorFROM php:8-apache-bookworm
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV SHELL /bin/bash
@@ -24,7 +24,7 @@ ENV ALLOW_OVERWRITE=on \
 #required dependencies
 RUN apt-get update && apt-get -y install --no-install-recommends tzdata locales \
     libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev zlib1g-dev net-tools \
-    libxml2-dev libzip-dev libonig-dev graphviz openssl xinetd 
+    libxml2-dev libzip-dev libonig-dev graphviz openssl xinetd supervisor
 #proftp and modules
 RUN apt-get update && apt-get -y install \
 	proftpd-basic proftpd-mod-crypto  proftpd-mod-vroot 
