@@ -57,17 +57,15 @@ COPY ./Docker/SQLite/sql.conf /etc/proftpd/sql.conf
 COPY ./Docker/SQLite/modules.conf /etc/proftpd/modules.conf
 
 # Do we actually *need this* ??
+#20240501 Itseems we do, but I will just use the Debian package
 # https://docs.docker.com/config/containers/multi-service_container/
 # https://github.com/ochinchina/supervisord
 #COPY --from=ochinchina/supervisord:latest /usr/local/bin/supervisord /usr/local/bin/supervisord
 #RUN  mkdir -p /etc/supervisord
-#COPY ./supervisord/supervisord.conf /etc/
-#COPY ./supervisord/proftpd.conf /etc/supervisord/
-#RUN sed -i 's|set -e|set -e\n/usr/local/bin/supervisord --daemon -c /etc/supervisord.conf \&|' /usr/local/bin/docker-php-entrypoint
+COPY ./Docker/supervisord/supervisord.conf /etc/
+COPY ./Docker/supervisord/proftpd.conf /etc/supervisord/
+RUN sed -i 's|set -e|set -e\n/usr/local/bin/supervisord --daemon -c /etc/supervisord.conf \&|' /usr/local/bin/docker-php-entrypoint
 
-COPY ./Docker/SQLite/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE 20 21 $PASV_MIN_PORT-$PASV_MAX_PORT
 
