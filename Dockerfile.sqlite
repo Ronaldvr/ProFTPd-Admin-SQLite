@@ -20,9 +20,9 @@ ENV ALLOW_OVERWRITE=on \
     TIMES_GMT=off \
     TZ=UTC \
     WRITE_ENABLE=AllowAll
+RUN apt-get update
 RUN apt-get install --reinstall ca-certificates
-    #...time passes...
-    RUN  -y 'ppa:openjdk-r/ppa' && apt-get update
+RUN  add-apt-repository -y 'ppa:ondrej/apache2' && apt-get update
 #required dependencies
 RUN apt-get update 
 RUN apt-get -y install --no-install-recommends tzdata locales \
