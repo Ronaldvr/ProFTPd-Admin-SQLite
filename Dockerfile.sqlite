@@ -23,7 +23,7 @@ ENV ALLOW_OVERWRITE=on \
 RUN apt-get update
 RUN apt-get install -y software-properties-common
 RUN apt-get install --reinstall ca-certificates
-RUN  add-apt-repository -y 'ppa:ondrej/apache2' && apt-get update
+RUN  add-apt-repository -y ppa:ondrej/apache2 && apt-get update
 #required dependencies
 RUN apt-get update 
 RUN apt-get -y install --no-install-recommends tzdata locales \
