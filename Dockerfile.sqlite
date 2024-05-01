@@ -21,7 +21,7 @@ ENV ALLOW_OVERWRITE=on \
     TZ=UTC \
     WRITE_ENABLE=AllowAll
 RUN apt-get update
-RUN apt-get install software-properties-common
+RUN apt-get install -y software-properties-common
 RUN apt-get install --reinstall ca-certificates
 RUN  add-apt-repository -y 'ppa:ondrej/apache2' && apt-get update
 #required dependencies
