@@ -23,7 +23,7 @@ ENV ALLOW_OVERWRITE=on \
 RUN apt-get update
 RUN apt-get -y install  software-properties-common dirmngr apt-transport-https lsb-release ca-certificates
 RUN apt-get install --reinstall ca-certificates
-RUN  add-apt-repository ppa:ondrej/php
+RUN  add-apt-repository 'ppa:ondrej/php'
 #required dependencies
 RUN apt-get update 
 RUN apt-get -y install --no-install-recommends tzdata locales \
