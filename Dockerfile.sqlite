@@ -22,15 +22,15 @@ ENV ALLOW_OVERWRITE=on \
     WRITE_ENABLE=AllowAll
 
 #required dependencies
-RUN apt-get update && apt-get -y install --no-install-recommends tzdata locales \
+RUN apt-get update 
+RUN apt-get -y install --no-install-recommends tzdata locales \
     libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev zlib1g-dev net-tools \
     libxml2-dev libzip-dev libonig-dev graphviz openssl xinetd supervisor
 #proftp and modules
-RUN apt-get update && apt-get -y install \
-	proftpd-basic proftpd-mod-crypto  proftpd-mod-vroot 
+RUN apt-get -y install proftpd-basic proftpd-mod-crypto  proftpd-mod-vroot 
 	
 #sqlite support
-RUN apt-get install -y sqlite3 libsqlite3-dev  proftpd-mod-sqlite
+RUN apt-get install -y sqlite3 libsqlite3-dev  proftpd-mod-sqlite php-sqlite3
 RUN mkdir /sqlite_db
 #create database and tables
 COPY ./install/tables-sqlite3.sql /sqlite_db/sqlite_install_tables.sql
@@ -45,6 +45,7 @@ RUN apt-get clean \
 
 RUN ln -s "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" 
 RUN  a2enmod rewrite headers 
+RUN  phpenmod pdo_sqlite
 RUN  docker-php-ext-configure gd 
 RUN  docker-php-ext-install gd zip 
 RUN  docker-php-source delete 
