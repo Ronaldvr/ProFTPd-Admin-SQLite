@@ -51,9 +51,8 @@ RUN ln -s "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN  a2enmod rewrite headers 
 RUN  docker-php-ext-configure gd 
 RUN  docker-php-ext-configure pdo_sqlite
-RUN  docker-php-ext-configure sqlite
 RUN  docker-php-ext-install gd zip 
-RUN  docker-php-ext-install sqlite3
+RUN  docker-php-ext-install pdo_sqlite
 RUN  docker-php-source delete 
 RUN mkdir /var/www/html/proftpdadmin
 COPY ./html /var/www/html/proftpdadmin
