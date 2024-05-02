@@ -49,7 +49,9 @@ RUN apt-get clean \
 
 RUN ln -s "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" 
 RUN  a2enmod rewrite headers 
-RUN  docker-php-ext-configure gd sqlite
+RUN  docker-php-ext-configure gd 
+RUN  docker-php-ext-configure pdo_sqlite
+RUN  docker-php-ext-configure sqlite
 RUN  docker-php-ext-install gd zip 
 RUN  docker-php-ext-install sqlite3
 RUN  docker-php-source delete 
