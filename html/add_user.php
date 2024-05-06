@@ -18,7 +18,11 @@ include_once ("includes/Session.php");
 include_once ("includes/AdminClass.php");
 
 $ac = new AdminClass($cfg);
-
+/* THE FOLLOWING IS WRONG!
+*  If you use generic identifiers in stead of the database ones you should not use the database fieldnames here!
+* currently to pressed to correct
+* TODO: This needs to be fixed.
+*/
 $field_userid     = $cfg['field_userid'];
 $field_uid        = $cfg['field_uid'];
 $field_ugid       = $cfg['field_ugid'];
@@ -35,7 +39,11 @@ $field_comment    = $cfg['field_comment'];
 $field_disabled   = $cfg['field_disabled'];
 $field_expiration = $cfg['field_expiration'];
 
-$groups = $ac->get_groups();
+$groups_0 = $ac->get_groups();
+$groups=array();
+foreach ($groups_0 as $gid=>$group) {
+  $groups[$gid]=$group['name'];
+}
 
 if (count($groups) == 0) {
   $errormsg = 'There are no groups in the database; please create at least one group before creating users.';
@@ -92,12 +100,15 @@ if (empty($errormsg) && !empty($_REQUEST["action"]) && $_REQUEST["action"] == "c
 //  }
 
   /* user name uniqueness validation */
-  if ($ac->check_username($_REQUEST[$field_userid])) {
+  if ($ac->check_exists('username',$_REQUEST[$field_userid])) {
     array_push($errors, 'User name already exists; name must be unique.');
   }
+    if ($ac->check_exists('uid',$_REQUEST[$field_uid])) {
+        array_push($errors, 'User id already exists; id must be unique.');
+    }
 
   /* gid existance validation */
-  if (!$ac->check_gid($_REQUEST[$field_ugid])) {
+  if (!$ac->check_exists('gid',$_REQUEST[$field_ugid])) {
     array_push($errors, 'Main group does not exist; GID cannot be found in the database.');
   }
 
@@ -119,7 +130,7 @@ if (empty($errormsg) && !empty($_REQUEST["action"]) && $_REQUEST["action"] == "c
                       $field_expiration => $_REQUEST[$field_expiration],
                       $field_disabled   => $disabled);
 
-    if ($ac->add_user($userdata)) {
+    if ($ac->add_or_update_user($userdata)) {
       if (isset($_REQUEST[$field_ad_gid])) {
         foreach ($_REQUEST[$field_ad_gid] as $g_key => $g_gid) {
           if (!$ac->is_valid_id($g_gid)) {
@@ -135,7 +146,7 @@ if (empty($errormsg) && !empty($_REQUEST["action"]) && $_REQUEST["action"] == "c
       $errormsg = 'User "'.$_REQUEST[$field_userid].'" creation failed; check log files.';
     }
   } else {
-    $errormsg = implode($errors, "<br />\n");
+    $errormsg = implode("<br />\n",$errors );
   }
 }
 
@@ -176,7 +187,7 @@ if (isset($errormsg)) {
     $shell  = $_REQUEST[$field_shell];
   }
 
-  $expiration = date("Y-m-d H:i:s", strtotime("+1 month", $time));
+  $expiration = date("Y-m-d H:i:s", strtotime("+1 month", time()));
   $sshpubkey  = "";
   $passwd     = $ac->generate_random_string((int) $cfg['min_passwd_length']);
   $homedir    = $cfg['default_homedir'];
