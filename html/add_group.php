@@ -32,7 +32,7 @@ if (!empty($_REQUEST["action"]) && $_REQUEST["action"] == "create") {
     array_push($errors, 'Invalid group name; group name must contain only letters, numbers, hyphens, and underscores with a maximum of '.$cfg['max_groupname_length'].' characters.');
   }
   /* group name uniqueness validation */
-  if ($ac->check_groupname($_REQUEST[$field_groupname])) {
+  if ($ac->check_exists('groupname',$_REQUEST[$field_groupname]) ) {
     array_push($errors, 'Name already exists; name must be unique.');
   }
   /* gid validation */
@@ -49,7 +49,7 @@ if (!empty($_REQUEST["action"]) && $_REQUEST["action"] == "create") {
     array_push($errors, 'Invalid GID; GID must be at least ' . $cfg['min_gid'] . '.');
   }
   /* gid uniqueness validation */
-  if ($ac->check_gid($_REQUEST[$field_gid])) {
+  if ($ac->check_exists('gid',$_REQUEST[$field_gid])) {
     array_push($errors, 'GID already exists; GID must be unique.');
   }
   /* data validation passed */
