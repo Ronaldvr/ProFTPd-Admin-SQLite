@@ -55,7 +55,7 @@ if (empty($errormsg) && !empty($_REQUEST["action"]) && $_REQUEST["action"] == "u
     array_push($errors, 'Invalid GID; GID must be a positive integer.');
   }
   /* gid uniqueness validation */
-  if (empty($errormsg) && $ac->check_gid($_REQUEST[$field_newgid])) {
+  if (empty($errormsg) && $ac->check_exists('gid',$_REQUEST[$field_newgid])) {
     array_push($errors, 'GID already exists; GID must be unique.');
   }
   /* gid range validation */
@@ -113,7 +113,7 @@ include ("includes/header.php");
               <th data-defaultsort="disabled"></th>
             </thead>
             <tbody>
-              <?php reset($users_main); while (list($u_id, $u_userid) = each($users_main)) {
+              <?php reset($users_main); foreach ($users_main as $u_id => $u_userid) {
                 $user = $ac->get_user_by_id($u_id); ?>
                 <tr>
                   <td class="pull-middle"><?php echo $user[$field_uid]; ?></td>
