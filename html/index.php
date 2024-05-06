@@ -19,7 +19,6 @@ include_once ("includes/AdminClass.php");
 
 
 $ac = new AdminClass($cfg);
-
 include ("includes/header.php");
 include ("includes/messages.php");
 
