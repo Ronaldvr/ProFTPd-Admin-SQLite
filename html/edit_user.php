@@ -112,11 +112,11 @@ if (empty($errormsg) && !empty($_REQUEST["action"]) && $_REQUEST["action"] == "u
 //  }
 
   /* user name uniqueness validation */
-  if ($userid != $_REQUEST[$field_userid] && $ac->check_username($_REQUEST[$field_userid])) {
+  if ($userid != $_REQUEST[$field_userid] && $ac->check_exists('username', $_REQUEST[$field_userid])) {
     array_push($errors, 'User name already exists; name must be unique.');
   }
   /* gid existance validation */
-  if (!$ac->check_gid($_REQUEST[$field_ugid])) {
+  if (!$ac->check_exists('gid',$_REQUEST[$field_ugid])) {
     array_push($errors, 'Main group does not exist; GID '.$_REQUEST[$field_ugid].' cannot be found in the database.');
   }
   /* data validation passed */
@@ -147,7 +147,7 @@ if (empty($errormsg) && !empty($_REQUEST["action"]) && $_REQUEST["action"] == "u
                       $field_comment    => $_REQUEST[$field_comment],
                       $field_expiration => $_REQUEST[$field_expiration],
                       $field_disabled   => $disabled);
-    if (!$ac->update_user($userdata)) {
+    if (!$ac->add_or_update_user($userdata)) {
       $errormsg = 'User "'.$_REQUEST[$field_userid].'" update failed; check log files.';
     } else {
       /* update user data */
