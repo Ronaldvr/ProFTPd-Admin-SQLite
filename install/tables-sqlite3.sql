@@ -58,6 +58,6 @@ CREATE TABLE user_groups (
 	CONSTRAINT user_groups_users_FK FOREIGN KEY (users_pk) REFERENCES users(users_pk)
 );
 CREATE UNIQUE INDEX groupname ON groups (groupname);
-CREATE UNIQUE INDEX user_groups_users_pk_IDX ON user_groups (users_pk,groupspk);
+CREATE UNIQUE INDEX user_groups_users_pk_IDX ON user_groups (users_pk,groups_pk);
 CREATE UNIQUE INDEX user_groups_userid_IDX ON user_groups (userid,groupid);
 COMMIT;
