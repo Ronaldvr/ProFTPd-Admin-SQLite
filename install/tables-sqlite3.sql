@@ -3,6 +3,7 @@
 *          sftphostkeys REMOVED: Functionality is hardly if ever used thus not implemented 
 *          sftpuserkeys REMOVED: Functionality already conrtained in 'users' table 
 *          login_history
+*          user_groups   
 * (Not sure if they will be used right now, but when already present easier to do )
 * removed MySQL type backticks from filednames
 * When exporting or copying pasting make sure to use Linux type line endings
@@ -10,7 +11,7 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE groups (
-  groupspk INTEGER PRIMARY KEY,
+  groups_pk INTEGER PRIMARY KEY,
   groupname VARCHAR(32) UNIQUE NOT NULL default '',
   gid UNSIGNED SMALLINT(6) UNIQUE NOT NULL,
   members VARCHAR(255) NOT NULL default ''
@@ -19,7 +20,7 @@ CREATE TABLE users (
   users_pk INTEGER PRIMARY KEY,
   userid VARCHAR(64) UNIQUE NOT NULL default '',
   uid UNSIGNED SMALLINT(6) default NULL,
-  gid UNSIGNED SMALLINT(6) default NULL,
+  ugid UNSIGNED SMALLINT(6) default NULL,
   passwd VARCHAR(265) NOT NULL default '',
   homedir VARCHAR(255) NOT NULL default '',
   comment VARCHAR(255) NOT NULL default '',
@@ -46,7 +47,17 @@ CREATE TABLE login_history (
     protocol TEXT NOT NULL,
     login_time DATETIME
 );
+CREATE TABLE user_groups (
+	gkid INTEGER NOT NULL,
+	groupid INTEGER NOT NULL,
+	userid INTEGER NOT NULL,
+	groups_pk INTEGER,
+	users_pk INTEGER NOT NULL,
+	CONSTRAINT user_groups_pk PRIMARY KEY (gkid),
+	CONSTRAINT user_groups_groups_FK FOREIGN KEY (groups_pk) REFERENCES groups(groups_pk),
+	CONSTRAINT user_groups_users_FK FOREIGN KEY (users_pk) REFERENCES users(users_pk)
+);
 CREATE UNIQUE INDEX groupname ON groups (groupname);
-CREATE UNIQUE INDEX userid ON users (userid);
+CREATE UNIQUE INDEX user_groups_users_pk_IDX ON user_groups (users_pk,groupspk);
+CREATE UNIQUE INDEX user_groups_userid_IDX ON user_groups (userid,groupid);
 COMMIT;
-
