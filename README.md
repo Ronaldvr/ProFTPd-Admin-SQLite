@@ -43,14 +43,14 @@ copy
 create database and tables
 * copy /install/tables-sqlite3.sql
 ```bash
-/sqlite3 /sqlite_db/ftpadmin.db < tables-sqlite3.sql
+/sqlite3 /sqlite_db/ftpadmin.db < db/tables-sqlite3.sql
 ```
 * set correct ownership on database so file is writeable
 * 
 ```bash
-sudo chown -R www-data:www-data .
+sudo chown -R www-data:www-data db
 ```
-
+Mind: for SQLite PDO, the *folder must be writeable too* https://stackoverflow.com/questions/3319112/sqlite-error-attempt-to-write-a-readonly-database-during-insert
 for your preferred database backend to a local folder and adapt to your needs.
 
 run docker compose up
