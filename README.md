@@ -43,9 +43,13 @@ copy
 create database and tables
 * copy /install/tables-sqlite3.sql
 ```bash
-/usr/bin/sqlite3 "/sqlite_db/ftpadmin.db < tables-sqlite3.sql"
+/sqlite3 /sqlite_db/ftpadmin.db < tables-sqlite3.sql
 ```
+* set correct ownership on database so file is writeable
 * 
+```bash
+sudo chown -R www-data:www-data .
+```
 
 for your preferred database backend to a local folder and adapt to your needs.
 
