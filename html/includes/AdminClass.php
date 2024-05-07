@@ -344,6 +344,7 @@ class AdminClass {
             } else {
                 $passwd = $passwd_encryption . '("' . $userdata[$field_passwd] . '")';
             }
+            $valuestoinsert[$field_passwd] = $passwd;
             $valuestoinsert[$this->config['field_sshpubkey']] = addslashes($userdata[ $this->config['field_sshpubkey']]);
             if ($this->check_exists('id_user', $userdata[$this->config['field_id']])) {
                 $isupdate=true;
