@@ -55,7 +55,7 @@ COPY ./Docker/SQLite/modules.conf /etc/proftpd/modules.conf
 #20240501 Itseems we do, but I will just use the Debian package
 # https://docs.docker.com/config/containers/multi-service_container/
 # COPY ./Docker/supervisord/supervisord.conf /etc/supervisord/
-COPY ./Docker/supervisord/proftpd.conf /etc/supervisord/conf.d/
+COPY ./Docker/supervisord/proftpd.conf /etc/supervisor/conf.d/
 RUN sed -i 's|set -e|set -e\n/usr/bin/supervisord -c /etc/supervisor/supervisord.conf \&|' /usr/local/bin/docker-php-entrypoint
 
 
