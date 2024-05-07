@@ -48,7 +48,12 @@ if (empty($_REQUEST[$field_id])) {
   die();
 }
 
-$groups = $ac->get_groups();
+$groups_0 = $ac->get_groups();
+$groups=array();
+foreach ($groups_0 as $gid=>$group) {
+  $groups[$gid]=$group['name'];
+}
+
 
 $id = $_REQUEST[$field_id];
 if (!$ac->is_valid_id($id)) {
