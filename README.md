@@ -1,5 +1,8 @@
 # ProFTPd Admin - Docker
 Adapted the proftpd Admin to a Dockerized Graphical User Interface for ProFTPd with MySQL and sqlite3 support
+Also removed ezSQL (which was an very obsolete version and an actually unnecessary interface) and changed the 
+database backend to PDO, during the rework necesary for this< also some obsolet pre php 8 statements were found
+and changed.
 
 ## About ProFTPd Admin
 
