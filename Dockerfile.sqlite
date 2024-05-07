@@ -20,11 +20,6 @@ ENV ALLOW_OVERWRITE=on \
     TIMES_GMT=off \
     TZ=UTC \
     WRITE_ENABLE=AllowAll
-#RUN apt-get update
-#RUN apt-get -y install  software-properties-common dirmngr apt-transport-https lsb-release ca-certificates python3-launchpadlib
-#RUN apt-get install --reinstall ca-certificates
-#RUN  add-apt-repository 'ppa:ondrej/php'
-#RUN  add-apt-repository 'ppa:ondrej/apache2'
 #required dependencies
 RUN apt-get update 
 RUN apt-get -y install --no-install-recommends tzdata locales \
@@ -36,11 +31,6 @@ RUN apt-get -y install proftpd-basic proftpd-mod-crypto  proftpd-mod-vroot
 #sqlite support
 RUN apt-get install -y sqlite3 libsqlite3-dev  proftpd-mod-sqlite libsqlite3-0
 #RUN apt-get install php8.3-sqlite3
-RUN mkdir /sqlite_db
-#create database and tables
-COPY ./install/tables-sqlite3.sql /sqlite_db/sqlite_install_tables.sql
-RUN /usr/bin/sqlite3 "/sqlite_db/ftpadmin.db < /sqlite_db/sqlite_install_tables.sql"
-
 
 #cleanup
 RUN apt-get clean \
