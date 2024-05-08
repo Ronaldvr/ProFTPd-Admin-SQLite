@@ -11,7 +11,7 @@
  *
  */
 global $cfg;
-
+/*
 include_once ("configs/config.php");
 // hash_pbkdf2 implementation for 5.3 <= PHP < 5.5
 if ($cfg['passwd_encryption'] == "pbkdf2") {
@@ -19,7 +19,7 @@ if ($cfg['passwd_encryption'] == "pbkdf2") {
 } elseif ($cfg['passwd_encryption'] == "crypt") {
     require "unix_crypt.php";
 }
-
+*/
 /**
  * Provides all functions needed by the individual scripts
  *
@@ -330,13 +330,11 @@ class AdminClass {
             foreach ($userdata as $key => $inputvalue) {
                 $valuestoinsert[$key] =$inputvalue;
             }
-            $valuestoinsert[$this->config['field_last_modified']] = date('Y-m-d H:i:s');
-            $valuestoinsert[$this->config['field_expiration']] = date("Y-m-d H:i:s", strtotime("+1 year", time()));
             if ($passwd_encryption == 'pbkdf2') {
-                $passwd = hash_pbkdf2("sha1", $userdata[$field_passwd], $userdata[$field_userid], 5000, 40);
+                $passwd = hash_pbkdf2("sha1", $userdata[$field_passwd], $userdata[$field_userid], 5000, 20);
                 $passwd = '"' . $passwd . '"';
             } else if ($passwd_encryption == 'crypt') {
-                $passwd = unix_crypt($userdata[$field_passwd]);
+                $passwd = crypt($userdata[$field_passwd],'');
                 $passwd = '"' . $passwd . '"';
             } else if (strpos($passwd_encryption, "OpenSSL:") === 0) {
                 $passwd_digest = substr($passwd_encryption, strpos($passwd_encryption, ':') + 1);
@@ -346,6 +344,8 @@ class AdminClass {
             }
             $valuestoinsert[$field_passwd] = $passwd;
             $valuestoinsert[$this->config['field_sshpubkey']] = addslashes($userdata[ $this->config['field_sshpubkey']]);
+            $valuestoinsert[$this->config['field_last_modified']] = date('Y-m-d H:i:s');
+            $valuestoinsert[$this->config['field_expiration']] = date("Y-m-d H:i:s", strtotime("+1 year", time()));
             if ($this->check_exists('id_user', $userdata[$this->config['field_id']])) {
                 $isupdate=true;
                  $query = $this->dbConn->prepare('UPDATE ' . $this->config['table_users'] . ' SET ' .$this->utbl_fields_string_param_u. ' WHERE  '.$this->config['field_id']. '=:gid2');
