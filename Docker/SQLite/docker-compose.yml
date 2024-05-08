@@ -1,6 +1,6 @@
 version: '3'
 
-
+name: w_proftpd_admin
 
 services:
   #Apache Service + ProFTPD Service
@@ -8,21 +8,28 @@ services:
     build:
       context: https://github.com/Ronaldvr/ProFTPd-Admin-SQLite.git
       dockerfile: Dockerfile.sqlite
-    image: proftpd/contain
     container_name: proftpd_Adm
     restart: unless-stopped
     ports:
       - 8080:80
       - 20:20
       - 21:21
+      - 22:22
+      - 210:210
+      - 211:211
+      - 1023:1023
+      - 1024:1024
       - $PASV_MIN_PORT-$PASV_MAX_PORT:${PASV_MIN_PORT}-${PASV_MAX_PORT}
     volumes:
       - ./config/config.php:/var/www/html/proftpdadmin/configs/config.php
-      - ./config/server.key:/etc/ssh/ssh_host_rsa_key:ro
-      - ./config/server.key:/usr/local/proftpd/etc/proftpd.key.pem:ro
-      - ./config/ftp.vanraay.org.pem:/usr/local/proftpd/etc/proftpd.cert.pem:ro
+      - ./db/:/var/www/html/proftpdadmin/db/
+      - ./certs/server.key:/etc/ssh/ssh_host_rsa_key
+      - ./certs/server.key:/usr/local/proftpd/etc/proftpd.key.pem:ro
+      - ./certs/ftp.vanraay.org.pem:/usr/local/proftpd/etc/proftpd.cert.pem:ro
       - ./config/proftpd.conf:/etc/proftpd/proftpd.conf
       - ./config/sql.conf:/etc/proftpd/sql.conf
       - ./config/modules.conf:/etc/proftpd/modules.conf
-      - ./logs/:/var/log/proftpd/
+      - ./logs/proftpd/:/var/log/proftpd/
+      - ./logs/supervisord/:/var/log/supervisor/
       - ./data/ftp:/srv/ftp
+      
