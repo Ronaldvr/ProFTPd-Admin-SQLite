@@ -331,7 +331,7 @@ class AdminClass {
                 $valuestoinsert[$key] =$inputvalue;
             }
             if ($passwd_encryption == 'pbkdf2') {
-                $passwd = hash_pbkdf2("sha1", $userdata[$field_passwd], $userdata[$field_userid], 5000, 20);
+                $passwd = hash_pbkdf2("sha1", $userdata[$field_passwd], $userdata[$this->config['field_userid'] ], 5000, 20);
                 $passwd = '"' . $passwd . '"';
             } else if ($passwd_encryption == 'crypt') {
                 $passwd = crypt($userdata[$field_passwd],'');
