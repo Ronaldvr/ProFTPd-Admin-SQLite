@@ -66,14 +66,13 @@ include ("includes/header.php");
                 <th data-defaultsort="disabled"></th>
               </thead>
               <tbody>
-                <?php foreach ($groups as $g_gid => $g_group) {
-                  $n_main = $ac->get_user_count_by_gid($g_gid);
+              <?php foreach ($groups as $g_gid => $g_group) {
                   $n_add = $ac->get_user_add_count_by_gid($g_gid); ?>
                   <tr>
-                    <td class="pull-middle"><?php echo $g_gid; ?></td>
-                    <td class="pull-middle"><a href="edit_group.php?action=show&<?php echo $cfg['field_gid']; ?>=<?php echo $g_gid; ?>"><?php echo $g_group; ?></a></td>
-                    <td class="pull-middle hidden-sm hidden-md hidden-lg"><?php echo ($n_main + $n_add); ?></td>
-                    <td class="pull-middle hidden-xs"><?php echo $n_main; ?></td>
+                  <td class="pull-middle"><?php echo $g_gid; ?></td>
+                    <td class="pull-middle"><a href="edit_group.php?action=show&<?php echo $cfg['field_gid']; ?>=<?php echo $g_gid; ?>"><?php echo $g_group['name']; ?></a></td>
+                    <td class="pull-middle hidden-sm hidden-md hidden-lg"><?php echo ($g_group['usercount'] + $n_add); ?></td>
+                    <td class="pull-middle hidden-xs"><?php echo $g_group['usercount']; ?></td>
                     <td class="pull-middle hidden-xs"><?php echo $n_add; ?></td>
                     <td class="pull-middle">
                       <div class="btn-toolbar pull-right" role="toolbar">
