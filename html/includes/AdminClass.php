@@ -320,6 +320,7 @@ class AdminClass {
          * Adds a user entry into the database
          * @param Array $userdata
          * @return Boolean true on success, false on failure
+         * TODO: Test on MySQL if quotes are needed
          */
         function add_or_update_user($userdata)
         {
@@ -332,7 +333,10 @@ class AdminClass {
             }
             if ($passwd_encryption == 'pbkdf2') {
                 $passwd = hash_pbkdf2("sha1", $userdata[$field_passwd], $userdata[$this->config['field_userid'] ], 5000, 20);
+                /*
                 $passwd = '"' . $passwd . '"';
+                These additional quotes do not work when using SQLITE at least. Test with MySQL.
+                */
             } else if ($passwd_encryption == 'crypt') {
                 $passwd = crypt($userdata[$field_passwd],'');
                 $passwd = '"' . $passwd . '"';
