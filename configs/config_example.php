@@ -74,7 +74,7 @@ $cfg['default_homedir'] = "/srv/ftp";
 // "pbkdf2" is supported if you are using ProFTPd 1.3.5.
 // "crypt" uses the unix crypt() function.
 // "OpenSSL:sha1" other digest-names also possible; see: http://www.proftpd.org/docs/directives/configuration_full.html#SQLAUTHTYPES
-$cfg['passwd_encryption'] = "crypt";
+$cfg['passwd_encryption'] = "pbkdf2";
 $cfg['min_passwd_length'] = "10";
 $cfg['max_userid_length'] = "64";
 $cfg['max_groupname_length'] = "32";
