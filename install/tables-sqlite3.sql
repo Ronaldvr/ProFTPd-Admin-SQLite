@@ -57,6 +57,35 @@ CREATE TABLE user_groups (
 	CONSTRAINT user_groups_groups_FK FOREIGN KEY (groups_pk) REFERENCES groups(groups_pk),
 	CONSTRAINT user_groups_users_FK FOREIGN KEY (users_pk) REFERENCES users(users_pk)
 );
+CREATE TABLE tmpLinuxUsers (
+  users_pk INTEGER PRIMARY KEY,
+  userid VARCHAR(64) UNIQUE NOT NULL,
+  passwd VARCHAR(265) NOT NULL default '',
+  uid UNSIGNED SMALLINT(6) NOT NULL,
+  ugid UNSIGNED SMALLINT(6) default NULL,
+  comment VARCHAR(255) NOT NULL default '',  
+  homedir VARCHAR(255) NOT NULL default '',
+  shell VARCHAR(32) NOT NULL default '/bin/false'
+);
+CREATE UNIQUE INDEX groupname ON groups (groupname);
+CREATE UNIQUE INDEX userid ON users (userid);
+CREATE VIEW check_users
+AS
+SELECT userid, uid
+FROM users u 
+UNION SELECT userid, uid 
+FROM tmpLinuxUsers;
+CREATE VIEW New_Linux_Users AS
+SELECT u.userid as 'name', u.passwd,u.uid, u.gid,u.comment as gecos,u.homedir,u.shell 
+FROM users u
+LEFT JOIN tmpLinuxUsers tlu
+ON tlu.uid = u.uid 
+WHERE tlu.uid IS NULL;
+CREATE VIEW check_groups
+AS
+SELECT groupspk, groupname, gid, members
+FROM groups;
+
 CREATE UNIQUE INDEX groupname ON groups (groupname);
 CREATE UNIQUE INDEX user_groups_users_pk_IDX ON user_groups (users_pk,groups_pk);
 CREATE UNIQUE INDEX user_groups_userid_IDX ON user_groups (userid,groupid);
