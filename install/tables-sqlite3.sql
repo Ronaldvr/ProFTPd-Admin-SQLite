@@ -69,12 +69,14 @@ CREATE TABLE tmpLinuxUsers (
 );
 CREATE UNIQUE INDEX groupname ON groups (groupname);
 CREATE UNIQUE INDEX userid ON users (userid);
-CREATE VIEW check_users
+CREATE VIEW
+check_users
 AS
-SELECT userid, uid
-FROM users u 
-UNION SELECT userid, uid 
-FROM tmpLinuxUsers;
+SELECT userid, uid, users_pk  FROM 
+users u 
+UNION SELECT userid, uid, null
+FROM
+tmpLinuxUsers
 CREATE VIEW New_Linux_Users AS
 SELECT u.userid as 'name', u.passwd,u.uid, u.gid,u.comment as gecos,u.homedir,u.shell 
 FROM users u
