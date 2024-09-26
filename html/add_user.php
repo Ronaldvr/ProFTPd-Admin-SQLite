@@ -13,14 +13,14 @@
 
 global $cfg;
 
-include_once ("configs/config.php");
-include_once ("includes/Session.php");
-include_once ("includes/AdminClass.php");
+include_once "configs/config.php";
+include_once "includes/Session.php";
+include_once "includes/AdminClass.php";
 
 $ac = new AdminClass($cfg);
 /* THE FOLLOWING IS WRONG!
 *  If you use generic identifiers in stead of the database ones you should not use the database fieldnames here!
-* currently to pressed to correct
+* currently too pressed to correct
 * TODO: This needs to be fixed.
 */
 $field_userid     = $cfg['field_userid'];
