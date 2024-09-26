@@ -5,13 +5,14 @@
  * @package ProFTPd-Admin
  * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
  *
+ * @copyright Ronald van Raaij <git_ronald@vanraay.org>
  * @copyright Ricardo Padilha <ricardo@droboports.com>
  * @copyright Christian Beer <djangofett@gmx.net>
  * @copyright Lex Brugman <lex_brugman@users.sourceforge.net>
  * @copyright Michael Keck <https://github.com/mkkeck>
  */
 
-$placeholder_sshpubkey = "---- BEGIN SSH2 PUBLIC KEY ---- \n Comment: ''foobar'' \n AAAAB3NzaC1..... \n .... \n .... \n .... \n .... \n qU9YwfGHe6ZRXTpV/5XvSX \n ---- END SSH2 PUBLIC KEY ----";
+$placeholder_sshpubkey = "---- BEGIN SSH2 PUBLIC KEY ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDwsywGDE9YvkbwWwSNTUwEF0dNsASqimstuO+VIZgggNRs7B+MdoIlf/uXY+9lUGWzDv9OLmp+4WjcKK2vfz65R4Iv7PgUH3d7Fr1iUfOJ50qE/Sr3aKw4oeZ7Q3pkzyU2m8es+EAbzROtF/pjaPwsUXhdNnPBtWkaW6AOXrqpw6Fw+jPdLqUn0DrWnCcDnbyNL3iwL6RnkTMoHAHlk0l+Ns+zXC0fUEa2Yz3zwl3r0bWbCM/z6WoY5KpMZ2ZGKjKzhW9FiyHgOR1CepTqolFYjTIWPEsCZqmNuD0kFuV9Y4ohtPfqknnEeqJhwogLaGoQHecqtIh8m7uw1VMZ0fOj ---- END SSH2 PUBLIC KEY ----";
 
 $cfg = array();
 
@@ -67,6 +68,13 @@ $cfg['table_groups'] = "groups";
 $cfg['field_groupname'] = "groupname";
 $cfg['field_gid'] = "gid";
 $cfg['field_members'] = "members";
+// This version collects groups and users from the linus environment
+//the view is a union so not accidentally (or on purpose) corresponding users can be assigned UserIDs or group membership that should not happen
+$cfg['view_user_check'] = "check_users";
+$cfg['view_group_check'] = "check_groups";
+
+
+
 
 $cfg['default_uid'] = "1001"; //if empty next incremental will be default
 $cfg['default_homedir'] = "/srv/ftp";
@@ -90,7 +98,7 @@ $cfg['max_uid'] = 65534;
 $cfg['min_gid'] = 1001;
 $cfg['max_gid'] = 65534;
 // Uncomment this to read crypt() settings from login.defs.
-// $cfg['read_login_defs'] = true;
+$cfg['read_login_defs'] = true;
 
 // next option activates a userid filter on users.php. Usefull if you want to manage a lot of users
 // that have a prefix like "pre-username", the first occurence of separator is recognized only!
@@ -105,6 +113,6 @@ $cfg['db_pass'] = "password";*/
 
 // use this block for an sqlite3 backend
 $cfg['db_type'] = "sqlite3";
-$cfg['db_path'] = "configs/";
-$cfg['db_name'] = "auth.sqlite3";
+$cfg['db_path'] = "db/";
+$cfg['db_name'] = "auth.sqlite";
 
