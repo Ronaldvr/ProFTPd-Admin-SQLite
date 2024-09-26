@@ -55,23 +55,61 @@ class AdminClass {
      * @var Array
      */
     var $utbl_fields = array();
+
+    /**
+     * user fields as string to paste into queries
+     * @var string
+     */
+    var $utbl_fields_string = '';
+
+    /**
+     * user fields as string with an alias prefix (u) to paste into (insert) queries
+     * 
+     * @var string
+     */
+    var $utbl_fields_string_wprefix = '';
+
+    /**
+     * user fields as parameter string ( :fieldname ) to paste into insert queries
+     * @var string
+     */
+    var $utbl_fields_string_param_i = '';
+
+    /**
+     * user fields as parameter string ( =:fieldname ) to paste into update queries
+     * @var string
+     */
+    var $utbl_fields_string_param_u = '';
+
+
     /**
      * $gtbl_fields
      * Fieldnames of groups table mapped to generic names
      * @access private
      * @var Array
+     */    
+     var $gtbl_fields = array();
+
+    /**
+     * group fields as string to paste into queries
+     * @var string
      */
-    var $gtbl_fields = array();
-
-    var $gtbl_fields_param ;
-
     var $gtbl_fields_string;
 
-    var $gtbl_fields_string_prefix ;
+    /**
+     * group fields as string with an alias prefix to paste into (insert) queries
+     * 
+     * @var string
+     */
+    var $gtbl_fields_string_wprefix ;
 
     var $gtbl_fields_string_param_i='';
 
+
     var $gtbl_fields_string_param_u;
+
+    var $LinUsers;
+
     /**
      * initialize the database connection via ezSQL_mysql
      * @param Array $cfg configuration array retrieved from config.php to store in the object
@@ -101,11 +139,11 @@ class AdminClass {
             $this->gtbl_fields_string = $this->gtbl_fields_string .  ', '.$fieldname;
         }
         $this->gtbl_fields_string = ltrim($this->gtbl_fields_string, ',');
-        $this->gtbl_fields_string_prefix='';
+        $this->gtbl_fields_string_wprefix='';
         foreach ($this->gtbl_fields as $key => $fieldname) {
-            $this->gtbl_fields_string_prefix = $this->gtbl_fields_string_prefix .  ', g.'.$fieldname;
+            $this->gtbl_fields_string_wprefix = $this->gtbl_fields_string_wprefix .  ', g.'.$fieldname;
         }
-        $this->gtbl_fields_string_prefix = ltrim($this->gtbl_fields_string_prefix, ',');
+        $this->gtbl_fields_string_wprefix = ltrim($this->gtbl_fields_string_wprefix, ',');
         $this->gtbl_fields_string_param_i='';
         foreach ($this->gtbl_fields as $key => $fieldname) {
             $this->gtbl_fields_string_param_i = $this->gtbl_fields_string_param_i .  ', :'.$fieldname;
@@ -138,11 +176,11 @@ class AdminClass {
                     $this->utbl_fields_string = $this->utbl_fields_string .  ', '.$fieldname;
              }
             $this->utbl_fields_string = ltrim($this->utbl_fields_string, ',');
-            $this->utbl_fields_string_prefix='';
+            $this->utbl_fields_string_wprefix='';
             foreach ($this->utbl_fields as $key => $fieldname) {
-                 $this->utbl_fields_string_prefix = $this->utbl_fields_string_prefix .  ', '.$fieldname;
+                 $this->utbl_fields_string_wprefix = $this->utbl_fields_string_wprefix .  ', u.'.$fieldname;
             }
-            $this->utbl_fields_string_prefix = ltrim($this->utbl_fields_string_prefix, ',');
+            $this->utbl_fields_string_wprefix = ltrim($this->utbl_fields_string_wprefix, ',');
             $this->utbl_fields_string_param_i='';
             foreach ($this->utbl_fields as $key => $fieldname) {
                 $this->utbl_fields_string_param_i = $this->utbl_fields_string_param_i .  ', :'.$fieldname;
@@ -153,11 +191,9 @@ class AdminClass {
                 $this->utbl_fields_string_param_u = $this->utbl_fields_string_param_u .  ', '.$fieldname.'=:'.$fieldname;
             }
             $this->utbl_fields_string_param_u = ltrim($this->utbl_fields_string_param_u, ',');
+            $this->LinUsers=$this->getLinuxUsers();        
+            $this->writeLinuxUserTmp( $this->LinUsers);           
             }
-
-
-
-
 
         /**
          * return the version number to outside class
@@ -202,14 +238,14 @@ class AdminClass {
             $field_gid = $this->config['field_gid'];
             $field_groupname = $this->config['field_groupname'];
             $fiels=$this->gtbl_fields_string;
-            $string='SELECT '.$this->gtbl_fields_string_prefix.',  count(u.'.$this->config['field_uid'].') as usercount 
+            $string='SELECT '.$this->gtbl_fields_string_wprefix.',  count(u.'.$this->config['field_uid'].') as usercount 
             FROM '.$this->config['table_groups']. ' AS g
             JOIN '.$this->config['table_users'].' AS u ON g.'.$this->config['field_gid'].' = u.'.$this->config['field_ugid'].'
-            GROUP BY '.$this->gtbl_fields_string_prefix;
-            $query = $this->dbConn->prepare('SELECT '.$this->gtbl_fields_string_prefix.',  count(u.'.$this->config['field_uid'].') as usercount 
+            GROUP BY '.$this->gtbl_fields_string_wprefix;
+            $query = $this->dbConn->prepare('SELECT '.$this->gtbl_fields_string_wprefix.',  count(u.'.$this->config['field_uid'].') as usercount 
                                                   FROM '.$this->config['table_groups']. ' AS g
                                                   LEFT JOIN '.$this->config['table_users'].' AS u ON g.'.$this->config['field_gid'].' = u.'.$this->config['field_ugid'].'
-                                                  GROUP BY '.$this->gtbl_fields_string_prefix);
+                                                  GROUP BY '.$this->gtbl_fields_string_wprefix);
             $data = array();
             if ($query->execute() == true) {
             $groups = $query->fetchAll(PDO::FETCH_ASSOC) ;
@@ -235,7 +271,7 @@ class AdminClass {
         /**
          * returns either the total number or the number of empty groups in the db
          * @param Boolean $only_emtpy
-         * @return Integer number or false on error
+         * @return int number or false on error
          * (Refactor: Split into 2 functions: this makes no sense as it is now)
          */
         function get_group_count($only_empty = false) {
@@ -253,7 +289,7 @@ class AdminClass {
         /**
          * returns either the total number or the number of disabled users in the db
          * @param Boolean $only_disabled
-         * @return Integer number or false on error
+         * @return int number or false on error
          */
         function get_user_count($only_disabled = false) {
             if ($only_disabled) {
@@ -269,7 +305,7 @@ class AdminClass {
 
         /**
          * returns the last index number of the user table
-         * @return Integer
+         * @return int
          */
         function get_last_uid() {
             $query = $this->dbConn->prepare('SELECT MAX('.$this->config['field_uid'].') FROM '.$this->config['table_users']);
@@ -285,15 +321,15 @@ class AdminClass {
 
         function check_exists($type, $value) {
             if ( $type=='groupname') {
-                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['table_groups'].' WHERE '.$this->config['field_groupname'].'=?');
+                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['view_group_check'].' WHERE '.$this->config['field_groupname'].'=?');
             } elseif ( $type=='gid') {
-                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['table_groups'].' WHERE '.$this->config['field_gid'].'=?');
+                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['view_group_check'].' WHERE '.$this->config['field_gid'].'=?');
             } elseif  ( $type== 'username') {
-                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['table_users'].' WHERE '.$this->config['field_userid'].'=?');
+                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['view_user_check'].' WHERE '.$this->config['field_userid'].'=?');
             }  elseif ( $type== 'id_user') {
-                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['table_users'].' WHERE '.$this->config['field_id'].'=?');
+                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['view_user_check'].' WHERE '.$this->config['field_id'].'=?');
             }  elseif ( $type== 'uid') {
-                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['table_users'].' WHERE '.$this->config['field_uid'].'=?');
+                $query = $this->dbConn->prepare('SELECT 1 FROM '.$this->config['view_user_check'].' WHERE '.$this->config['field_uid'].'=?');
             }
             $query->execute(array($value));
             return $query->fetchColumn(0);
@@ -370,11 +406,12 @@ class AdminClass {
                     return $query->errorCode();
                 }
             return true;
+
         }
 
         /**
          * retrieve a group by gid
-         * @param Integer $gid
+         * @param int $gid
          * @return Object
          */
         function get_group_by_gid($gid) {
@@ -389,20 +426,21 @@ class AdminClass {
 
         /**
          * retrieve a user by userid
-         * @param String $userid
+         * @param string $userid
          * @return Array
          */
         function get_user_by_userid($userid) {
+            $userid_param=array(0=>$userid);
             if (empty($userid)) return false;
             $query = $this->dbConn->prepare('SELECT * FROM '.$this->config['table_users'].' WHERE '.$this->config['field_userid'].'="?"');
-            $query->execute($userid);
+            $query->execute($userid_param);
             $result = $query->fetchAll();
             return $result; 
         }
 
         /**
          * retrieve a user by id
-         * @param Integer $id
+         * @param int $id
          * @return Array
          */
         function get_user_by_id($id) {
@@ -418,7 +456,7 @@ class AdminClass {
         /**
          * retrieves user from database with given maingroup
          * and populates an array of $data[id] = userid
-         * @param Integer $gid
+         * @param int $gid
          * @return Array form is $data[id] = userid
          */
         function get_users_by_gid($gid)
@@ -448,7 +486,7 @@ class AdminClass {
 
         /**
          * retrieves members from group and populates an array of $data[id] = userid
-         * @param Integer $gid
+         * @param int $gid
          * @return Array form is $data[id] = userid
          * TODO: Create users/groups linking table that does this as should be in a properly normalized database
          */
@@ -475,8 +513,8 @@ class AdminClass {
         /**
          * retrieves user from database with given maingroup
          * and returns their count
-         * @param Integer $gid
-         * @return Integer number
+         * @param int $gid
+         * @return int number
          * TODO: Could replace this with complicated SQL but the TODO on the previous function would achive
          * TODO: the desired result in another manner anyway
          */
@@ -501,35 +539,38 @@ class AdminClass {
 
         /**
          * Adds a user to a comma separated group string using the groupid, and inserts it into members field of group table
-         * @param Integer $userid
-         * @param Integer $gid
+         * @param string $userid
+         * @param int $gid
          * @return boolean false on error
          */
         function add_user_to_group($userid, $gid) {
             if (empty($userid) || empty($gid)) return false;
-            $query = $this->dbConn->prepare('SELECT '.$this->config['field_members'].' FROM '.$this->config['table_groups'].' WHERE '. $this->config['field_gid'].'=?');
-            $query->execute( array($gid));
-            $result = $query->fetchColumn();
-            if ($result != "") {
-                if(strpos($result, $userid) !== false) {
-                    return true;
+            if ( $this->check_exists('group',$gid)) {            
+                $query = $this->dbConn->prepare('SELECT '.$this->config['field_members'].' FROM '.$this->config['table_groups'].' WHERE '. $this->config['field_gid'].'=?');
+                $query->execute( array($gid));
+                $result = $query->fetchColumn();
+                if ($result != "") {
+                    if(strpos($result, $userid) !== false) {
+                        return true;
+                    } else {
+                        $members = $result.','.$userid;
+                    }
                 } else {
-                    $members = $result.','.$userid;
+                    $members = $userid;
                 }
-            } else {
-                $members = $userid;
+                $query = $this->dbConn->prepare('UPDATE '.$this->config['table_groups'].' SET '. $this->config['field_members'].'="?" WHERE '.$this->config['field_gid'].'=?');
+                if ($query ->execute(array($members, $gid)) == false ) {
+                    return false; }
+            } else { 
+                return false; 
             }
-
-            $query = $this->dbConn->prepare('UPDATE '.$this->config['table_groups'].' SET '. $this->config['field_members'].'="?" WHERE '.$this->config['field_gid'].'=?');
-            if ($query ->execute(array($members, $gid)) == false ) {
-                 return false; }
             return true;
         }
 
         /**
          * removes a user from a given group using the groupid
-         * @param Integer $userid
-         * @param Integer $gid
+         * @param string $userid
+         * @param int $gid
          * @return boolean false on error
          */
         function remove_user_from_group($userid, $gid) {
@@ -556,8 +597,8 @@ class AdminClass {
 
         /**
          * updates the group entry in the database (currently only the gid!)
-         * @param Integer $gid
-         * @param Integer $new_gid
+         * @param int $gid
+         * @param int $new_gid
          * @return Boolean true on success, false on failure
          */
         function update_group($gid, $new_gid) {
@@ -573,7 +614,7 @@ class AdminClass {
 
         /**
          * delete a group by gid
-         * @param Integer $gid
+         * @param int $gid
          * @return Boolean true on success, false on failure
          */
         function delete_group_by_gid($gid) {
@@ -585,7 +626,7 @@ class AdminClass {
 
         /**
          * removes the user entry from the database
-         * @param Integer $id
+         * @param int $id
          * @return Boolean true on success, false on failure
          */
         function remove_user_by_id($id) {
@@ -595,9 +636,65 @@ class AdminClass {
             return true;
         }
 
+        function getLinuxUsers() {
+            $result = [];
+            /** @see http://php.net/manual/en/function.posix-getpwnam.php */
+            $keys = ['name', 'passwd', 'uid', 'gid', 'gecos', 'dir', 'shell'];
+            $handle = fopen('/var/www/hostpasswd', 'r');
+            if(!$handle){
+            throw new RuntimeException("failed to open /etc/passwd from the host for reading! ".print_r(error_get_last(),true));
+            }
+            while ( ($values = fgetcsv($handle, 1000, ':')) !== false ) {
+                $result[] = array_combine($keys, $values);
+            }
+            fclose($handle);
+            return $result;
+        }
+
+        function writeLinuxUserTmp( $valuestoinsert )
+        {
+        $this->dbConn->query('DELETE FROM tmpLinuxUsers');
+
+        $query = $this->dbConn->prepare('INSERT INTO tmpLinuxUsers  (userid, passwd, uid, ugid, comment, homedir, shell) VALUES (:name, :passwd, :uid, :gid, :gecos, :dir, :shell)');
+        foreach ($valuestoinsert as $rowtoinsert ) {
+            foreach ($rowtoinsert as $paramname => $value) {
+                $query->bindValue(':' . $paramname, $value);
+            }
+            if ($query->execute() == false) {
+                    return $query->errorCode();
+            }
+        }
+//        $query = $this->dbConn->prepare('INSERT INTO tmpLinuxUsers  (userid, passwd, uid, ugid, comment, homedir, shell) VALUES (:name, :passwd, :uid, :gid, :gecos, :dir, :shell)');
+
+        return true;
+        }
+
+         function ExportNewUsertoLinux( ) {
+        /**
+         * Exports not yet exisitng users to a file that can be used with the newusers linux command
+         * https://www.man7.org/linux/man-pages/man8/newusers.8.html
+         * NOTE:This route means it may be prohibited to use a colon in the password
+         */
+        $query = $this->dbConn->prepare('SELECT * FROM New_Linux_Users');
+        $query->execute();
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (count($result) == 0) {
+            return null;
+          }
+          $df = fopen("newusers.txt", 'w');
+          /* header lline not neessary or even wanted
+          fputcsv($df, array_keys($result[0]),":");
+          */
+          foreach ($result as $row) {
+                     fputcsv($df, $row, ":");
+          }
+          fclose($df);
+        return true;
+        }
+	
         /**
          * generate a random string
-         * @param Integer $length default 6
+         * @param int $length default 6
          * @return String of random characters of the specified length
          */
         function generate_random_string($length = 6) {
@@ -612,8 +709,8 @@ class AdminClass {
 
         /**
          * check the validity of the id
-         * @param Integer $id
-         * @return Boolean true if the given id is a positive integer
+         * @param int $id
+         * @return Boolean true if the given id is a positive int
          */
         function is_valid_id($id) {
             return is_numeric($id) && (int)$id > 0 && $id == round($id);
