@@ -195,6 +195,12 @@ class AdminClass {
             $this->writeLinuxUserTmp( $this->LinUsers);           
             }
 
+
+
+
+
+
+
         /**
          * return the version number to outside class
          * @return String
@@ -218,7 +224,7 @@ class AdminClass {
                     $names = explode(",", $group[$this->config['field_members']]);
                     reset($names);
                     foreach ($names as $key => $name) {
-                        $data[$name][$this->config['field_gid']] = $group[$this->config['field_groupname']];
+                        $data[$group[$this->config['field_gid']]] = $group[$this->config['field_groupname']];
                     }
                 }
             }
@@ -691,7 +697,11 @@ class AdminClass {
           fclose($df);
         return true;
         }
-	
+
+         
+
+
+        
         /**
          * generate a random string
          * @param int $length default 6
