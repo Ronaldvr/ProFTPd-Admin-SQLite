@@ -82,7 +82,7 @@ ON tlu.uid = u.uid
 WHERE tlu.uid IS NULL;
 CREATE VIEW check_groups
 AS
-SELECT groupspk, groupname, gid, members
+SELECT groups_pk, groupname, gid, members
 FROM groups;
 CREATE UNIQUE INDEX user_groups_users_pk_IDX ON user_groups (users_pk,groups_pk);
 CREATE UNIQUE INDEX user_groups_userid_IDX ON user_groups (userid,groupid);
