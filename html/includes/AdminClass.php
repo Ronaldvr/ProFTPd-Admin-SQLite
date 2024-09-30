@@ -687,7 +687,7 @@ class AdminClass {
         if (count($result) == 0) {
             return null;
           }
-          $df = fopen("config/newusers.txt", 'w');
+          $df = fopen("/var/www/html/proftpdadmin/configs/newusers.txt", 'w');
           /* header lline not neessary or even wanted
           fputcsv($df, array_keys($result[0]),":");
           */
