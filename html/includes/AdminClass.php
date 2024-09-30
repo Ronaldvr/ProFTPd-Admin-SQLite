@@ -687,7 +687,7 @@ class AdminClass {
         if (count($result) == 0) {
             return null;
           }
-          $df = fopen("newusers.txt", 'w');
+          $df = fopen("config/newusers.txt", 'w');
           /* header lline not neessary or even wanted
           fputcsv($df, array_keys($result[0]),":");
           */
