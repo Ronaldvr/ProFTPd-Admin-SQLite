@@ -75,7 +75,7 @@ users u
 UNION SELECT userid, uid, null
 FROM tmpLinuxUsers;
 CREATE VIEW New_Linux_Users AS
-SELECT u.userid as 'name', u.passwd,u.uid, u.gid,u.comment as gecos,u.homedir,u.shell 
+SELECT u.userid as 'name', u.passwd,u.uid, u.ugid,u.comment as gecos,u.homedir,u.shell 
 FROM users u
 LEFT JOIN tmpLinuxUsers tlu
 ON tlu.uid = u.uid 
